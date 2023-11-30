@@ -89,9 +89,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM2_Init();
+
   /* USER CODE BEGIN 2 */
+  MX_TIM2_Init();
+  SCH_Init();
   HAL_TIM_Base_Start_IT(&htim2);
+
+  SCH_Add_Task(ToggleLed1, 0, 500);
+  SCH_Add_Task(ToggleLed2, 0, 1000);
+  SCH_Add_Task(ToggleLed3, 0, 1500);
+  SCH_Add_Task(ToggleLed4, 0, 2000);
+  SCH_Add_Task(ToggleLed5, 0, 2500);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,7 +108,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  SCH_Dispatch_Tasks();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -215,7 +224,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-
+	SCH_Update();
 }
 /* USER CODE END 4 */
 
